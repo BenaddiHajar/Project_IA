@@ -85,6 +85,9 @@ public class Neuron {
 	public void backPropagate(double target){
 		//propagation de retour pour un neurone dans la couche de sortie
 		//retour val est la valeur correcte
+		
+		//TEST SOUDA
+		
 	}	
 	
 	
