@@ -1,6 +1,10 @@
 package ann;
 
 import java.util.Iterator;
+/*
+ * Input :
+ *  modélise l’entrée, pour notre application, il s’agira donc des valeurs des 28x28 pixels.
+ */
 
 public class Input implements Iterable<Double>{
 	
