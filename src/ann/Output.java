@@ -1,7 +1,12 @@
 package ann;
 
 import java.util.Iterator;
-
+/*
+ * Output:
+ * modélise la sortie. Pour notre application, il s’agit de chire ( de zéro à neuf ). Cependant,
+ * comme on a choisit comme couche de sortie 10 neurones, chaque neurone i indiquant si le chiffre est i,
+ * une Output sera en fait un tableau de 10 valeurs.
+ */
 public class Output implements Iterable<Double> {
 	double[] value;
 
