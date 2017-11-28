@@ -9,7 +9,7 @@ import java.util.Random;
 /*
  * La classeNeuron modélise un neurone. Chaque neurone n aura deux listes : la liste des neurones
  * "sources", i.e. les neurones qui enverront les entrées à n et la liste des neurones "destinataires", i.e.
- * les neurones qui utilisent la valeur de sortie de n.
+ * les neurones qui utilisent la valeur de sortie de n.!!!
  */
 public class Neuron {
 	/** name of the neuron */
