@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 /*
- * La classeNeuron modélise un neurone. Chaque neurone n aura deux listes : la liste des neurones
- * "sources", i.e. les neurones qui enverront les entrées à n et la liste des neurones "destinataires", i.e.
+ * La classeNeuron modï¿½lise un neurone. Chaque neurone n aura deux listes : la liste des neurones
+ * "sources", i.e. les neurones qui enverront les entrï¿½es ï¿½ n et la liste des neurones "destinataires", i.e.
  * les neurones qui utilisent la valeur de sortie de n.!!!
  */
 public class Neuron {
@@ -78,7 +78,8 @@ public class Neuron {
 		for( Neuron n: parents){
 			somP +=  w.get(n)*n.getCurrentOutput();
 		}
-		out= somP;
+		//appel de la fonction d'activation.
+		out= h.activate(somP);
 	}
 	
 	
@@ -88,9 +89,27 @@ public class Neuron {
 	 */
 	public void backPropagate(double target){
 		//propagation de retour pour un neurone dans la couche de sortie
-		//retour val est la valeur correcte
+		//val est la valeur correcte
+		/**
+		 * n est le nombre d'observation de la base d'apprentissage --> nombre couche cachÃ©Ã©????
+		 * //calcul de l'erreur du neurones --> erreur moyenne quadratique 
+		 */
+		//calcul du delta erreur pour un neurone 
+		double somme =0;
+		double delta = out * (target-this.out);
+		for(Neuron o :children){
+			somme += w.get(o)*o.getError();
+		}
+		delta*=somme;
+		error=delta;
 		
-		//TEST SOUDA
+		//mise Ã  jour du poids output du neurone 
+		for( Neuron o: parents){
+		double poidsMaj=(w.get(o)+eta)*(out*o.getError());
+		w.put(o,poidsMaj);
+		}
+		
+		
 		
 	}	
 	
