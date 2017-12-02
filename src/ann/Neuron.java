@@ -105,14 +105,10 @@ public class Neuron {
 		
 		//mise à jour du poids output du neurone 
 		for( Neuron o: parents){
-		double poidsMaj=(w.get(o)+eta)*(out*o.getError());
+		double poidsMaj=(w.get(o)+eta)*(o.out*error);
 		w.put(o,poidsMaj);
 		}
-		
-		
-		
 	}	
-	
 	
 	/**
 	 * returns the current ouput (it should be called once the output has been computed, 

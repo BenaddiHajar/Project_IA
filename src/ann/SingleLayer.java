@@ -14,8 +14,9 @@ public class SingleLayer extends ANN{
 		generator = new Random();
 		this.trainingData = trainingData;
 		this.testingData = testingData;
-		
-		// to be completed
+		this.outLayer=new ArrayList <Neuron>();
+		this.inLayer= new ArrayList <InputNeuron>();
+				// to be completed
 	
 	}
 	
@@ -23,9 +24,19 @@ public class SingleLayer extends ANN{
 		// to be completed
 		return null;
 	}
-	
-	
+	/**
+	*méthode qui entraîne le réseau de neurones pour un certain nombre d'itérations (aucun test de convergence n'est utilisé).
+	* @param numIterations est le nombre d'itérations, c'est-à-dire le nombre de fois que l'algorithme sera mis à jour en utilisant
+	* l'ensemble des données d'entraînement
+	* @return renvoie la dynamique de l'erreur: il contient une carte qui associe un numéro d'itération et le
+	* nombre d'erreurs effectuées sur l'ensemble de test.
+	*/
 	public Map<Integer,Double> train(int nbIterations) {
+		for (int i =0;i<nbIterations;i++){
+			
+		}
+		
+		
 		// to be completed
 		return null;
 	}
