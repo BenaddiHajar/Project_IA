@@ -7,18 +7,20 @@ import java.util.Map;
 import java.util.Random;
 public class SingleLayer extends ANN{
 	
-	
-	
+
 
 	public SingleLayer(Map<Input, Output> trainingData, Map<Input, Output> testingData) {
 		generator = new Random();
 		this.trainingData = trainingData;
 		this.testingData = testingData;
-		List<Neuron> outLayer =new ArrayList <Neuron>(10);
-		for(Neuron n:outLayer){
-			Neuron nout =new Neuron(new Linear());
+		outLayer =new ArrayList <Neuron>(10);
+		for(int i=0; i<10;i++){
+			outLayer.add(new Neuron(new Sigmoid()));
 		}
-		List<InputNeuron> inLayer =new ArrayList<InputNeuron>(28*28); 
+		inLayer =new ArrayList<InputNeuron>(28*28); 
+		for(int i=0; i<28*28;i++){
+			inLayer.add(new InputNeuron()) ;
+		}
 		
 		//initialisation des poids des outputs
 		for(Neuron n :outLayer){
@@ -49,7 +51,14 @@ public class SingleLayer extends ANN{
 	 */
 	public Output feed(Input in){
 		Output o;
-		double [] listout = new double[0];
+		//copie des datas dans inLayer et normalisation 
+		Iterator<Double> vals=in.iterator();
+		for(InputNeuron inpN : inLayer){
+			inpN=new InputNeuron(255);
+			inpN.feed(vals.next());
+		}
+		
+		double [] listout = new double[10];
 		//les poids d'un neurone de sortie 
 		List <Double> poids = new ArrayList<Double>() ;
 		//pour chaque Neurone de outlayer on reccupere le poids et on lui associe la somme calucler plus bas
@@ -61,20 +70,24 @@ public class SingleLayer extends ANN{
 	       //
 	       double somme= 0;
 	       //1er for : parcours la liste des poid du neurone n de outLayer
-	       //2eme et 3eme for parcourir les datas  et reccuperer les valeurs  Input 
 			for(Double d :  poids){
-				for(int i=0;i<28;i++){
-					for(int j=0 ;j<28;j++){
-						somme += in.getValue(i,j)*d; //somme des datas * le poids
-					}
+				for(InputNeuron inpN:inLayer){
+					//voir feed de neurone
+			      somme += inpN.out*d; //somme des datas pour chaque output * le poids
+			     
+			      
 				}
+			
 				int indice =0;
 				somme /=(28*28); //normalisation [0-1]
+				///test///
+				n.out=somme;
+				//test///
 				System.out.println("Somme norm :" +somme);
 				listout[indice]=somme;
 				indice++;
 		   }
-	 }
+		}
 		//trouver la plus grande valeur de listOut
 				double max=0;
 				int indice=0;
@@ -85,7 +98,10 @@ public class SingleLayer extends ANN{
 						System.out.println("Max:" +max);
 					}
 				}
-			 o =new Output(indice);
+				
+		
+				
+			 o=new Output(indice);
 			 return o;
 	}
 	/**
@@ -99,15 +115,27 @@ public class SingleLayer extends ANN{
 		Map <Integer,Double> tr=new HashMap<Integer,Double>();
 		// to be completed
 		//feed --> bacpropagration --->test 
-		Input in = null;
+		for(int i=0;i<nbIterations;i++){
+		Input in = new Input(28);
+		Output out=null;
 		for (HashMap.Entry<Input, Output> entry : trainingData.entrySet()){
 		 in=entry.getKey();
+		 out=entry.getValue();
 		}
 		Output ou = feed(in);
 		
+		//appel de Backpropagation
+		double[] valtrainData = out.getVal();
+		int ind=0;
+		for(Neuron n :outLayer){
+			n.backPropagate(valtrainData[ind]);
+			ind++;
+		}
 		
-		
-		
+		//appel de test
+		double err = test(trainingData,i);
+		tr.put(i,err);
+		}
 		
 	 return tr;
 	}

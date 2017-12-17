@@ -11,6 +11,7 @@ public class InputNeuron extends Neuron {
 
 	double normalise;
 	
+	
 	public InputNeuron(){
 		super(null);
 	}
@@ -20,7 +21,7 @@ public class InputNeuron extends Neuron {
 		this.normalise = normalise; 
 	}
 	
-	public void feed(double val){
-		out=val/normalise;
+	public void  feed(double val){
+		 out=val/normalise;
 	}
 }
