@@ -96,17 +96,23 @@ public class Neuron {
 		 */
 		//calcul du delta erreur pour un neurone 
 		double somme =0;
-		double delta = out * (target-this.out);
-		for(Neuron o :children){
+		double delta = eta * (target-this.out);
+		
+		// retropropagation vers les parents du neurones  <--
+		
+		// Mise a jours du poids vers output --> One HiddenLayer 
+		/*for(Neuron o :children){
 			somme += w.get(o)*o.getError();
 		}
-		delta*=somme;
+	
+		delta*=somme;*/
 		error=delta;
 		
 		//mise à jour du poids output du neurone 
 		for( Neuron o: parents){
-		double poidsMaj=(w.get(o)+eta)*(o.out*error);
-		w.put(o,poidsMaj);
+				//double poidsMaj=(w.get(o)+eta)*(o.out*error);
+			double poidsMaj=(w.get(o)+eta)*(target-this.out);
+			w.put(o,poidsMaj);
 		}
 	}	
 	
