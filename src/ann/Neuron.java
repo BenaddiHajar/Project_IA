@@ -77,6 +77,7 @@ public class Neuron {
 		double somP=0;
 		for( Neuron n: parents){
 			somP +=  w.get(n)*n.getCurrentOutput();
+			System.out.println(w.get(n)+"*"+n.getCurrentOutput());
 		}
 		//appel de la fonction d'activation.
 		out= h.activate(somP);
@@ -99,8 +100,9 @@ public class Neuron {
 		double delta = eta * (target-this.out);
 		
 		// retropropagation vers les parents du neurones  <--
-		
 		// Mise a jours du poids vers output --> One HiddenLayer 
+		
+		//mise a jour de l'error
 		/*for(Neuron o :children){
 			somme += w.get(o)*o.getError();
 		}
@@ -110,8 +112,10 @@ public class Neuron {
 		
 		//mise à jour du poids output du neurone 
 		for( Neuron o: parents){
-				//double poidsMaj=(w.get(o)+eta)*(o.out*error);
-			double poidsMaj=(w.get(o)+eta)*(target-this.out);
+			
+		//	double poidsMaj=(w.get(o)+eta)*(target-this.out);
+			double poidsMaj=w.get(o)+(eta*(target-this.out)*o.getCurrentOutput());  //formule de ouerdia
+			
 			w.put(o,poidsMaj);
 		}
 	}	

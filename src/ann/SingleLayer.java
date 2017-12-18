@@ -15,36 +15,27 @@ public class SingleLayer extends ANN{
 		this.testingData = testingData;
 		outLayer =new ArrayList <Neuron>(10);
 		for(int i=0; i<10;i++){
-			outLayer.add(new Neuron(new Sigmoid()));
+			outLayer.add(new Neuron(new Linear()));
 		}
 		inLayer =new ArrayList<InputNeuron>(28*28); 
-		for(int i=0; i<28*28;i++){
-			inLayer.add(new InputNeuron()) ;
+		 for(int i=0; i<28*28;i++){
+		  inLayer.add(new InputNeuron()) ;
+		}
+		
+		//initialisation des parents pour chaque neurone de outlayer 
+		for(Neuron n: outLayer){
+			n.parents.addAll(inLayer);
+		
+		}
+		//initilisation des enfants pour chaque neurone inLayer
+		for(InputNeuron ip:inLayer){
+			ip.children.addAll(outLayer);
 		}
 		
 		//initialisation des poids des outputs
 		for(Neuron n :outLayer){
 			n.initWeights();
 		}
-		//creation des liens --> pour chaque InputNeuron de inLayer on le lie a la liste de 10 Neuron de outLayer
-		Map<InputNeuron, List<Neuron>> lien=new HashMap<InputNeuron,List<Neuron>>();
-		for(InputNeuron inN:inLayer){
-			lien.put(inN, outLayer);
-		}
-		
-		//initilisation a 0 Input et output de trainingData (contruire les listes)
-		/*for(int i=0; i<60000;i++){
-		Input input=new Input(28);
-		Output output=new Output(0); ;
-		 this.trainingData.put(input, output);
-		        for (int row=0; row<(28); row++){
-		        	for(int col=0;col<28;col++){
-		        		input.setValue(row, col, 0);
-		        	}
-		        }
-		      //initialisation des poids de output
-		      
-		    }*/
 	}
 	/**
 	 * Calcule la sortie du réseau de neurones compte tenu de l'entree Input in
@@ -58,11 +49,17 @@ public class SingleLayer extends ANN{
 			inpN.feed(vals.next());
 		}
 		
-		double [] listout = new double[10];
-		//les poids d'un neurone de sortie 
-		List <Double> poids = new ArrayList<Double>() ;
+		double [] listout = new double[10]; 				 // somme pondérées out calculé de outlayer 
+	//	List <Double> poids = new ArrayList<Double>() ;		 // listes des poids associées à un neurone de sortie 
+		for(Neuron n :outLayer){
+			n.feed();
+		    int indice =0;
+				//System.out.println("Somme norm :" +n.out);
+			listout[indice]=n.getCurrentOutput();
+			indice++;
+		}
 		//pour chaque Neurone de outlayer on reccupere le poids et on lui associe la somme calucler plus bas
-		for(Neuron n:outLayer){
+/*		for(Neuron n:outLayer){
 	       Map<Neuron,Double> p = n.w;
 	       for (Map.Entry<Neuron,Double> e :p.entrySet()){
 	    	    poids.add(e.getValue());
@@ -74,20 +71,21 @@ public class SingleLayer extends ANN{
 				for(InputNeuron inpN:inLayer){
 					//voir feed de neurone
 			      somme += inpN.out*d; //somme des datas pour chaque output * le poids
-			     
-			      
 				}
 			
-				int indice =0;
-				somme /=(28*28); //normalisation [0-1]
+				
+			    somme /=(28*28); //normalisation [0-1]
 				///test///
-				n.out=somme;
+			  //  Linear h=null;
+				//n.out=h.activate(somme);
 				//test///
-				System.out.println("Somme norm :" +somme);
-				listout[indice]=somme;
-				indice++;
-		   }
-		}
+*/			   // int indice =0;
+			//	System.out.println("Somme norm :" +somme);
+			//	listout[indice]=somme;
+			//	indice++;
+		  //}
+		//}
+		
 		//trouver la plus grande valeur de listOut
 				double max=0;
 				int indice=0;
@@ -97,10 +95,7 @@ public class SingleLayer extends ANN{
 						indice =i;
 						System.out.println("Max:" +max);
 					}
-				}
-				
-		
-				
+				}	
 			 o=new Output(indice);
 			 return o;
 	}
@@ -113,66 +108,31 @@ public class SingleLayer extends ANN{
 	*/
 	public Map<Integer,Double> train(int nbIterations) {
 		Map <Integer,Double> tr=new HashMap<Integer,Double>();
-		// to be completed
 		//feed --> bacpropagration --->test 
-		for(int i=0;i<nbIterations;i++){
-		Input in = new Input(28);
+		
+		for(int i=1;i<=nbIterations;i++){
+		Input in = null;
 		Output out=null;
+		
 		for (HashMap.Entry<Input, Output> entry : trainingData.entrySet()){
 		 in=entry.getKey();
 		 out=entry.getValue();
-		}
-		Output ou = feed(in);
+		
+		 Output ou = feed(in);
 		
 		//appel de Backpropagation
-		double[] valtrainData = out.getVal();
-		int ind=0;
-		for(Neuron n :outLayer){
+		 double[] valtrainData = out.getVal();
+		 int ind=0;
+		 for(Neuron n :outLayer){
 			n.backPropagate(valtrainData[ind]);
 			ind++;
+		 }
 		}
-		
 		//appel de test
 		double err = test(trainingData,i);
 		tr.put(i,err);
 		}
-		
 	 return tr;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/*double nbrerreur=0;
-	for (int i =0;i<nbIterations;i++){
-		for (Neuron o:this.outLayer){
-			o.initWeights();
-			o.feed();
-			o.toString();
-			
-		}
-		for (Neuron o:this.inLayer){
-			o.backPropagate(255);
-			nbrerreur +=o.getError();
-			o.toString();
-		}
-		
-		tr.put(i, nbrerreur);
-		nbrerreur=0;
-		
-	}
-	//test(new, nbIterations);
-	return tr;*/
-
 }
