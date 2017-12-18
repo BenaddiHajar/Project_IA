@@ -15,21 +15,23 @@ public class SingleLayer extends ANN{
 		this.testingData = testingData;
 		outLayer =new ArrayList <Neuron>(10);
 		for(int i=0; i<10;i++){
-			outLayer.add(new Neuron(new Linear()));
+			outLayer.add(new Neuron(new Sigmoid()));
 		}
 		inLayer =new ArrayList<InputNeuron>(28*28); 
-		 for(int i=0; i<28*28;i++){
-		  inLayer.add(new InputNeuron()) ;
+		for(int i=0; i<28*28;i++){
+		 inLayer.add(new InputNeuron(255)) ;
 		}
 		
-		//initialisation des parents pour chaque neurone de outlayer 
+		//lien des parents pour chaque neurone de outlayer 
 		for(Neuron n: outLayer){
-			n.parents.addAll(inLayer);
-		
+			for(InputNeuron inN :inLayer)
+			n.parents.add(inN);
 		}
-		//initilisation des enfants pour chaque neurone inLayer
+		//lien des enfants pour chaque neurone inLayer
 		for(InputNeuron ip:inLayer){
-			ip.children.addAll(outLayer);
+			//ip.children.addAll(outLayer);
+			for(Neuron nN: outLayer)
+				ip.children.add(nN);
 		}
 		
 		//initialisation des poids des outputs
@@ -45,46 +47,20 @@ public class SingleLayer extends ANN{
 		//copie des datas dans inLayer et normalisation 
 		Iterator<Double> vals=in.iterator();
 		for(InputNeuron inpN : inLayer){
-			inpN=new InputNeuron(255);
-			inpN.feed(vals.next());
+			//inpN=new InputNeuron(255);
+			inpN.feed(vals.next());	
+	     	//System.out.println(inpN.getCurrentOutput());
 		}
 		
-		double [] listout = new double[10]; 				 // somme pondérées out calculé de outlayer 
-	//	List <Double> poids = new ArrayList<Double>() ;		 // listes des poids associées à un neurone de sortie 
+		
+		double [] listout = new double[10]; 				 // somme pondérées out calculé pour outlayer  
 		for(Neuron n :outLayer){
 			n.feed();
 		    int indice =0;
-				//System.out.println("Somme norm :" +n.out);
+			//System.out.println("Somme norm :" +n.out);
 			listout[indice]=n.getCurrentOutput();
 			indice++;
 		}
-		//pour chaque Neurone de outlayer on reccupere le poids et on lui associe la somme calucler plus bas
-/*		for(Neuron n:outLayer){
-	       Map<Neuron,Double> p = n.w;
-	       for (Map.Entry<Neuron,Double> e :p.entrySet()){
-	    	    poids.add(e.getValue());
-	    	}
-	       //
-	       double somme= 0;
-	       //1er for : parcours la liste des poid du neurone n de outLayer
-			for(Double d :  poids){
-				for(InputNeuron inpN:inLayer){
-					//voir feed de neurone
-			      somme += inpN.out*d; //somme des datas pour chaque output * le poids
-				}
-			
-				
-			    somme /=(28*28); //normalisation [0-1]
-				///test///
-			  //  Linear h=null;
-				//n.out=h.activate(somme);
-				//test///
-*/			   // int indice =0;
-			//	System.out.println("Somme norm :" +somme);
-			//	listout[indice]=somme;
-			//	indice++;
-		  //}
-		//}
 		
 		//trouver la plus grande valeur de listOut
 				double max=0;
@@ -93,7 +69,7 @@ public class SingleLayer extends ANN{
 					if(listout[i]>max){
 						max=listout[i];
 						indice =i;
-						System.out.println("Max:" +max);
+					//	System.out.println("Max:" +max);
 					}
 				}	
 			 o=new Output(indice);

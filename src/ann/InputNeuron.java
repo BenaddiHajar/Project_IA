@@ -23,6 +23,6 @@ public class InputNeuron extends Neuron {
 	
 	public void  feed(double val){
 		 out=val/normalise;
-	     System.out.println("out de inputNeuron: "+out);
+	    // System.out.println("out de inputNeuron: "+out);
 	}
 }

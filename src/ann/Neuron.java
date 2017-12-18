@@ -77,8 +77,9 @@ public class Neuron {
 		double somP=0;
 		for( Neuron n: parents){
 			somP +=  w.get(n)*n.getCurrentOutput();
-			System.out.println(w.get(n)+"*"+n.getCurrentOutput());
+			//System.out.println(w.get(n)+"*"+n.getCurrentOutput());
 		}
+		somP /= (28*28);
 		//appel de la fonction d'activation.
 		out= h.activate(somP);
 	}
@@ -117,6 +118,7 @@ public class Neuron {
 			double poidsMaj=w.get(o)+(eta*(target-this.out)*o.getCurrentOutput());  //formule de ouerdia
 			
 			w.put(o,poidsMaj);
+			
 		}
 	}	
 	
