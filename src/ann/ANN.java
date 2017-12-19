@@ -9,11 +9,11 @@ import java.util.Random;
  * Abstract class for an artificial neural network
  * @author stephane
  * 
- * La classe abstraite ANN (pour Articial Neural Network) contient la description du réseau de neu-rones. 
- * Elle décrit les diérentes couches de neurones. En particulier, tout réseau doit avoir la couche d’entrée 
- * (inLayer) et la couche de sortie (outLayer). La classe contient aussi les données pour en-trainer 
- * le réseau (trainingData) et pour tester le réseau (testingData). Pour vos réseaux, il faudra 
- * implémenter les méthodes
+ * La classe abstraite ANN (pour Articial Neural Network) contient la description du rï¿½seau de neu-rones. 
+ * Elle dï¿½crit les diï¿½rentes couches de neurones. En particulier, tout rï¿½seau doit avoir la couche dï¿½entrï¿½e 
+ * (inLayer) et la couche de sortie (outLayer). La classe contient aussi les donnï¿½es pour en-trainer 
+ * le rï¿½seau (trainingData) et pour tester le rï¿½seau (testingData). Pour vos rï¿½seaux, il faudra 
+ * implï¿½menter les mï¿½thodes
  *
  */
 public abstract class ANN {
@@ -62,6 +62,7 @@ public abstract class ANN {
 			count++;
 			Input in = d.getKey();
 			Output out = d.getValue();
+			System.out.println(out.toString());
 			Output result = feed(in);
 			if (!out.equals(result))
 				numMistakes++;

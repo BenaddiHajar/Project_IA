@@ -52,27 +52,26 @@ public class SingleLayer extends ANN{
 	     	//System.out.println(inpN.getCurrentOutput());
 		}
 		
-		
+		int indice =0;
 		double [] listout = new double[10]; 				 // somme pondérées out calculé pour outlayer  
 		for(Neuron n :outLayer){
 			n.feed();
-		    int indice =0;
+		    
 			//System.out.println("Somme norm :" +n.out);
 			listout[indice]=n.getCurrentOutput();
 			indice++;
 		}
-		
 		//trouver la plus grande valeur de listOut
-				double max=0;
-				int indice=0;
+		/*		double max=0;
+				
 				for(int i=0;i<listout.length;i++){
 					if(listout[i]>max){
 						max=listout[i];
 						indice =i;
 					//	System.out.println("Max:" +max);
 					}
-				}	
-			 o=new Output(indice);
+				}	*/
+			 o=new Output(listout);
 			 return o;
 	}
 	/**
@@ -94,7 +93,7 @@ public class SingleLayer extends ANN{
 		 in=entry.getKey();
 		 out=entry.getValue();
 		
-		 Output ou = feed(in);
+		 feed(in);
 		
 		//appel de Backpropagation
 		 double[] valtrainData = out.getVal();
@@ -105,7 +104,7 @@ public class SingleLayer extends ANN{
 		 }
 		}
 		//appel de test
-		double err = test(trainingData,i);
+		double err = test(testingData,i);
 		tr.put(i,err);
 		}
 	 return tr;
