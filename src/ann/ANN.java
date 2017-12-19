@@ -62,7 +62,6 @@ public abstract class ANN {
 			count++;
 			Input in = d.getKey();
 			Output out = d.getValue();
-			System.out.println(out.toString());
 			Output result = feed(in);
 			if (!out.equals(result))
 				numMistakes++;

@@ -65,8 +65,6 @@ public class Neuron {
 		//initialise le poids des arretes entrantes 
 		for(Neuron n: parents){
 			w.put(n,generator.nextDouble());
-			
-			//
 		}
 	}
 	
@@ -81,8 +79,6 @@ public class Neuron {
 			somP +=  w.get(n)*n.getCurrentOutput();
 			//System.out.println(w.get(n)+"*"+n.getCurrentOutput());
 		}
-		//somP /= (28*28);
-		//appel de la fonction d'activation.
 		out= h.activate(somP);
 	}
 	
@@ -92,36 +88,23 @@ public class Neuron {
 	 * @param val is the correct value.
 	 */
 	public void backPropagate(double target){
-		//propagation de retour pour un neurone dans la couche de sortie
-		//val est la valeur correcte
-		/**
-		 * n est le nombre d'observation de la base d'apprentissage --> nombre couche cachéé????
-		 * //calcul de l'erreur du neurones --> erreur moyenne quadratique 
-		 */
-		//calcul du delta erreur pour un neurone 
-		
-		error =  (target-this.out);
+		//calcul erreur pour un neurone 
+		error=(target-this.out);
 		
 		// retropropagation vers les parents du neurones  <--
 		// Mise a jours du poids vers output --> One HiddenLayer 
 		
-		//mise a jour de l'error
-		double somme =0;
-		/*for(Neuron o :children){
-			somme += w.get(o)*o.getError();
-		}
-		delta*=somme;*/
-	//	error=delta;
+		 double somme =0;
+		
 		
 		//mise à jour du poids output du neurone 
 		double poidsMaj=0;
 		for( Neuron o: parents){
 			//System.out.println("poid avant"+w.get(o));
-		//	double poidsMaj=(w.get(o)+eta)*(target-this.out);
-			poidsMaj=w.get(o)+(eta*(error)*o.getCurrentOutput());  //formule de ouerdia
+			poidsMaj=w.get(o)+(eta*(error)*o.getCurrentOutput()); 
 			w.put(o,poidsMaj);
-		//	System.out.println("t -o" +(this.out)+" " +o.getCurrentOutput());
-		  //  System.out.println("poid MAJ"+ w.get(o));
+		  //System.out.println("t -o" +(this.out)+" " +o.getCurrentOutput());
+		  // System.out.println("poid MAJ"+ w.get(o));
 		}
 	}	
 	

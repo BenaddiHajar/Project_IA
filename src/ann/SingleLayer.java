@@ -15,7 +15,7 @@ public class SingleLayer extends ANN{
 		this.testingData = testingData;
 		outLayer =new ArrayList <Neuron>(10);
 		for(int i=0; i<10;i++){
-			outLayer.add(new Neuron(new Sigmoid()));
+			outLayer.add(new Neuron(new Linear())); //new Sigmoid() 
 		}
 		inLayer =new ArrayList<InputNeuron>(28*28); 
 		for(int i=0; i<28*28;i++){
@@ -47,7 +47,6 @@ public class SingleLayer extends ANN{
 		//copie des datas dans inLayer et normalisation 
 		Iterator<Double> vals=in.iterator();
 		for(InputNeuron inpN : inLayer){
-			//inpN=new InputNeuron(255);
 			inpN.feed(vals.next());	
 	     	//System.out.println(inpN.getCurrentOutput());
 		}
@@ -56,23 +55,12 @@ public class SingleLayer extends ANN{
 		double [] listout = new double[10]; 				 // somme pondérées out calculé pour outlayer  
 		for(Neuron n :outLayer){
 			n.feed();
-		    
 			//System.out.println("Somme norm :" +n.out);
 			listout[indice]=n.getCurrentOutput();
 			indice++;
 		}
-		//trouver la plus grande valeur de listOut
-		/*		double max=0;
-				
-				for(int i=0;i<listout.length;i++){
-					if(listout[i]>max){
-						max=listout[i];
-						indice =i;
-					//	System.out.println("Max:" +max);
-					}
-				}	*/
-			 o=new Output(listout);
-			 return o;
+		o=new Output(listout);
+		return o;
 	}
 	/**
 	*méthode qui entraîne le réseau de neurones pour un certain nombre d'itérations (aucun test de convergence n'est utilisé).
@@ -85,7 +73,7 @@ public class SingleLayer extends ANN{
 		Map <Integer,Double> tr=new HashMap<Integer,Double>();
 		//feed --> bacpropagration --->test 
 		
-		for(int i=1;i<=nbIterations;i++){
+		for(int i=0;i<nbIterations;i++){
 		Input in = null;
 		Output out=null;
 		
