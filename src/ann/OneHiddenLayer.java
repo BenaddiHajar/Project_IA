@@ -98,7 +98,7 @@ public class OneHiddenLayer extends ANN{
 	public Map<Integer,Double> train(int nbIterations) {
 		Map <Integer,Double> tr=new HashMap<Integer,Double>();
 		//feed --> bacpropagration --->test 
-		for(int i=0;i<nbIterations;i++){
+		for(int i=1;i<=nbIterations;i++){
 			Input in = null;
 			Output out=null;
 			for (HashMap.Entry<Input, Output> entry : trainingData.entrySet()){
@@ -110,13 +110,21 @@ public class OneHiddenLayer extends ANN{
 				 int ind=0;
 				 
 				 
-				 for(Neuron n :hiddenLayer){
-						n.backPropagateHiddenLayer(valtrainData[ind]);
-				}  
-				 
+				
 				 for(Neuron n :outLayer){
-					n.backPropagateHiddenLayer(n.error);
+					n.backPropagateHiddenLayer(valtrainData[ind]);
 					ind++;
+				 }
+				 
+				 for(Neuron n :hiddenLayer){
+						n.backPropagateHiddenLayer(n.error);
+				}  
+				 //maj poids
+				 for(Neuron n :hiddenLayer){
+						n.majPoidHiddenLayer();
+				 } 
+				 for(Neuron n: outLayer){
+					 n.majPoidHiddenLayer();
 				 }
 				 
 				 

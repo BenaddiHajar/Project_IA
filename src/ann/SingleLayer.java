@@ -39,7 +39,7 @@ public class SingleLayer extends ANN{
 			n.initWeights();
 		}
 		
-		//initialisation des poids pour hiddenLayer
+		
 		
 		
 		
@@ -78,7 +78,7 @@ public class SingleLayer extends ANN{
 		Map <Integer,Double> tr=new HashMap<Integer,Double>();
 		//feed --> bacpropagration --->test 
 		
-		for(int i=0;i<nbIterations;i++){
+		for(int i=1;i<=nbIterations;i++){
 		Input in = null;
 		Output out=null;
 		

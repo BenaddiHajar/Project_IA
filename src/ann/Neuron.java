@@ -62,9 +62,13 @@ public class Neuron {
 	 * Initializes randomly the weights of the incoming edges 
 	 */
 	public void initWeights(){
+		double r ;
 		//initialise le poids des arretes entrantes 
 		for(Neuron n: parents){
-			w.put(n,generator.nextDouble());
+		   r= -0.5+(0.5-(-0.5))*generator.nextDouble();
+		   System.out.println(r);
+		    //double randomValue = rangeMin + (rangeMax - rangeMin) * r.nextDouble();
+			w.put(n,r);
 		}
 	}
 	
@@ -89,7 +93,7 @@ public class Neuron {
 	 */
 	public void backPropagate(double target){
 		//calcul erreur pour un neurone 
-		double delta=(target-this.out);
+		error=(target-this.out);
 		
 		// retropropagation vers les parents du neurones  <--
 		// Mise a jours du poids vers output --> One HiddenLayer 
@@ -110,30 +114,33 @@ public class Neuron {
 
 	
 	public void backPropagateHiddenLayer(double target){
-		error=(target-this.out);
+		//error=(target-this.out);
 		double somme=0;
-		
-		//propagation avant de l'erreur 
-		for(Neuron o :children){
-			 somme += w.get(o)*o.getError();
-			
+	   
+		//si la liste des enfants est vide alors c'est un neurone de outLayer
+		if(children.isEmpty()){
+			error= this.getCurrentOutput()*(1-this.getCurrentOutput())*(target-this.getCurrentOutput());
 		}
-		error*=somme;
-		
-		//mise à jour du poids output du neurone 
-				double poidsMaj=0;
-				for( Neuron o: parents){
-					//System.out.println("poid avant"+w.get(o));
-					
-				//	Out*(1-out)*(target-out)
-					poidsMaj=w.get(o)+((1-this.out)*(error)*o.getCurrentOutput()); 
-					w.put(o,poidsMaj);
-				   //System.out.println("t -o" +(this.out)+" " +o.getCurrentOutput());
-				   // System.out.println("poid MAJ"+ w.get(o));
-				}
-		
+		//sinon c'est un hidden
+		else if(children.isEmpty()==false && parents.isEmpty()==false){
+			for(Neuron n : children){
+				somme += n.w.get(this)*n.error;
+			}
+			error= this.getCurrentOutput()*(1-this.getCurrentOutput())* somme;
+		}
+	
 		
 	}
+	
+	public void majPoidHiddenLayer(){
+		//mise à jour du poids output du neurone 
+		double poidsMaj=0;
+		for( Neuron o: parents){
+			poidsMaj=w.get(o)+(eta*(error)*o.getCurrentOutput()); 
+			w.put(o,poidsMaj);
+		}
+	}
+	
 	
 	
 	/**
