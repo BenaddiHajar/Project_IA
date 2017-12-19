@@ -89,24 +89,52 @@ public class Neuron {
 	 */
 	public void backPropagate(double target){
 		//calcul erreur pour un neurone 
-		error=(target-this.out);
+		double delta=(target-this.out);
 		
 		// retropropagation vers les parents du neurones  <--
 		// Mise a jours du poids vers output --> One HiddenLayer 
 		
 		 double somme =0;
-		
-		
+		 
 		//mise à jour du poids output du neurone 
 		double poidsMaj=0;
 		for( Neuron o: parents){
 			//System.out.println("poid avant"+w.get(o));
 			poidsMaj=w.get(o)+(eta*(error)*o.getCurrentOutput()); 
 			w.put(o,poidsMaj);
-		  //System.out.println("t -o" +(this.out)+" " +o.getCurrentOutput());
-		  // System.out.println("poid MAJ"+ w.get(o));
+		   //System.out.println("t -o" +(this.out)+" " +o.getCurrentOutput());
+		   // System.out.println("poid MAJ"+ w.get(o));
 		}
 	}	
+	
+
+	
+	public void backPropagateHiddenLayer(double target){
+		error=(target-this.out);
+		double somme=0;
+		
+		//propagation avant de l'erreur 
+		for(Neuron o :children){
+			 somme += w.get(o)*o.getError();
+			
+		}
+		error*=somme;
+		
+		//mise à jour du poids output du neurone 
+				double poidsMaj=0;
+				for( Neuron o: parents){
+					//System.out.println("poid avant"+w.get(o));
+					
+				//	Out*(1-out)*(target-out)
+					poidsMaj=w.get(o)+((1-this.out)*(error)*o.getCurrentOutput()); 
+					w.put(o,poidsMaj);
+				   //System.out.println("t -o" +(this.out)+" " +o.getCurrentOutput());
+				   // System.out.println("poid MAJ"+ w.get(o));
+				}
+		
+		
+	}
+	
 	
 	/**
 	 * returns the current ouput (it should be called once the output has been computed, 

@@ -5,9 +5,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-public class SingleLayer extends ANN{
-	
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.HiddenAction;
+public class SingleLayer extends ANN{
 
 	public SingleLayer(Map<Input, Output> trainingData, Map<Input, Output> testingData) {
 		generator = new Random();
@@ -15,7 +15,7 @@ public class SingleLayer extends ANN{
 		this.testingData = testingData;
 		outLayer =new ArrayList <Neuron>(10);
 		for(int i=0; i<10;i++){
-			outLayer.add(new Neuron(new Linear())); //new Sigmoid() 
+			outLayer.add(new Neuron(new Sigmoid())); //new Sigmoid() 
 		}
 		inLayer =new ArrayList<InputNeuron>(28*28); 
 		for(int i=0; i<28*28;i++){
@@ -38,6 +38,11 @@ public class SingleLayer extends ANN{
 		for(Neuron n :outLayer){
 			n.initWeights();
 		}
+		
+		//initialisation des poids pour hiddenLayer
+		
+		
+		
 	}
 	/**
 	 * Calcule la sortie du réseau de neurones compte tenu de l'entree Input in
@@ -52,7 +57,7 @@ public class SingleLayer extends ANN{
 		}
 		
 		int indice =0;
-		double [] listout = new double[10]; 				 // somme pondérées out calculé pour outlayer  
+		double [] listout = new double[10]; // somme pondérées out calculé pour outlayer  
 		for(Neuron n :outLayer){
 			n.feed();
 			//System.out.println("Somme norm :" +n.out);
@@ -90,6 +95,9 @@ public class SingleLayer extends ANN{
 			n.backPropagate(valtrainData[ind]);
 			ind++;
 		 }
+		 
+	 
+		 
 		}
 		//appel de test
 		double err = test(testingData,i);

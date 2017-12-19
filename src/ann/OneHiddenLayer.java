@@ -15,18 +15,115 @@ public class OneHiddenLayer extends ANN{
 		generator = new Random();
 		this.trainingData = trainingData;
 		this.testingData = testingData;
-		// to be completed
+		
+		outLayer =new ArrayList <Neuron>(10);
+		for(int i=0; i<10;i++){
+			outLayer.add(new Neuron(new Sigmoid())); //new Sigmoid() 
+		}
+		
+		inLayer =new ArrayList<InputNeuron>(28*28); 
+		for(int i=0; i<28*28;i++){
+		 inLayer.add(new InputNeuron(255)) ;
+		}
+		
+		
+		hiddenLayer =new ArrayList<Neuron>(10);
+		for(int i=0; i<10;i++){
+			hiddenLayer.add(new Neuron(new Sigmoid())); //new Sigmoid() 
+		}
+		
+		//lien des parents de hiddenLAyer
+			for(Neuron n :hiddenLayer){
+				for(InputNeuron inL :inLayer)
+					n.parents.add(inL);
+			}
+		
+		//lien des enfants de hiddenLayer
+			for(Neuron n :hiddenLayer){
+				for(Neuron outL :outLayer)
+					n.children.add(outL);
+			}
+		
+		//lien des parents pour chaque neurone de outlayer 
+				for(Neuron n: outLayer){
+					for(Neuron hl :hiddenLayer)
+					n.parents.add(hl);
+				}
+				
+		//lien des enfants pour chaque neurone inLayer
+				for(InputNeuron ip:inLayer){
+					for(Neuron hl: hiddenLayer)
+						ip.children.add(hl);
+				}
+		
+		
+		  //initialisation des poids des outputs
+			for(Neuron n :outLayer){
+					n.initWeights();
+			}
+			
+		//initialisation des poids de hiddelLayer
+			for(Neuron n :hiddenLayer){
+				n.initWeights();
+			}
 	}
 	
 	public Output feed(Input in){
-		// to be completed
-		return null;
+		Output o;
+		double [] listout = new double[10];
+		int indice=0;
+		//copie des données data dans inlayer
+		Iterator<Double> vals=in.iterator();
+		for(InputNeuron inpN : inLayer){
+			inpN.feed(vals.next());	
+	     	//System.out.println(inpN.getCurrentOutput());
+		}
+ //PROPAGATION AVANT	
+		// feed sur l'ensemble hiddenLayer
+		for(Neuron n :hiddenLayer){
+			n.feed();
+		}
+		//feed sur l'ensemble de outLayer
+		for(Neuron n: outLayer){
+			n.feed();
+			listout[indice]=n.getCurrentOutput();
+			indice++;
+		}
+		
+		o=new Output(listout);
+		return o;
 	}
-	
 	
 
 	public Map<Integer,Double> train(int nbIterations) {
-		// to be completed
+		Map <Integer,Double> tr=new HashMap<Integer,Double>();
+		//feed --> bacpropagration --->test 
+		for(int i=0;i<nbIterations;i++){
+			Input in = null;
+			Output out=null;
+			for (HashMap.Entry<Input, Output> entry : trainingData.entrySet()){
+				 in=entry.getKey();
+				 out=entry.getValue();
+				 feed(in);
+				 
+				 double[] valtrainData = out.getVal();
+				 int ind=0;
+				 
+				 
+				 for(Neuron n :hiddenLayer){
+						n.backPropagateHiddenLayer(valtrainData[ind]);
+				}  
+				 
+				 for(Neuron n :outLayer){
+					n.backPropagateHiddenLayer(n.error);
+					ind++;
+				 }
+				 
+				 
+			}
+			double err = test(testingData,i);
+			tr.put(i,err);
+		}
 		return null;
 	}
 
