@@ -109,8 +109,6 @@ public class OneHiddenLayer extends ANN{
 				 double[] valtrainData = out.getVal();
 				 int ind=0;
 				 
-				 
-				
 				 for(Neuron n :outLayer){
 					n.backPropagateHiddenLayer(valtrainData[ind]);
 					ind++;
@@ -119,6 +117,7 @@ public class OneHiddenLayer extends ANN{
 				 for(Neuron n :hiddenLayer){
 						n.backPropagateHiddenLayer(n.error);
 				}  
+				 
 				 //maj poids
 				 for(Neuron n :hiddenLayer){
 						n.majPoidHiddenLayer();
@@ -127,14 +126,11 @@ public class OneHiddenLayer extends ANN{
 					 n.majPoidHiddenLayer();
 				 }
 				 
-				 
 			}
 			double err = test(testingData,i);
 			tr.put(i,err);
 		}
-		return null;
+		return tr;
 	}
-
-	
 
 }

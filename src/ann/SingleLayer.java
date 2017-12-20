@@ -96,8 +96,6 @@ public class SingleLayer extends ANN{
 			ind++;
 		 }
 		 
-	 
-		 
 		}
 		//appel de test
 		double err = test(testingData,i);
