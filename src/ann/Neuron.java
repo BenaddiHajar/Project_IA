@@ -66,8 +66,7 @@ public class Neuron {
 		//initialise le poids des arretes entrantes 
 		for(Neuron n: parents){
 		   r= -0.5+(0.5-(-0.5))*generator.nextDouble();
-		   System.out.println(r);
-		    //double randomValue = rangeMin + (rangeMax - rangeMin) * r.nextDouble();
+		   //System.out.println(r);
 			w.put(n,r);
 		}
 	}
