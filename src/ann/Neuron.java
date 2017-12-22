@@ -62,10 +62,12 @@ public class Neuron {
 	 * Initializes randomly the weights of the incoming edges 
 	 */
 	public void initWeights(){
+		double min = -0.5;
+		double max= 0.5;
 		double r ;
 		//initialise le poids des arretes entrantes 
 		for(Neuron n: parents){
-		   r= -0.5+(0.5-(-0.5))*generator.nextDouble();
+		   r= min+(max-min)*generator.nextDouble();
 		   //System.out.println(r);
 			w.put(n,r);
 		}
@@ -76,7 +78,7 @@ public class Neuron {
 	 * (there are no arguments as the neuron is not an inputNeuron)
 	 */
 	public void feed(){
-		// to be completed//la somme pondérée de ses entrées// utilisation de ses parents 
+		//la somme pondérée de ses entrées// utilisation de ses parents 
 		double somP=0;
 		for( Neuron n: parents){
 			somP +=  w.get(n)*n.getCurrentOutput();
@@ -92,12 +94,8 @@ public class Neuron {
 	 */
 	public void backPropagate(double target){
 		//calcul erreur pour un neurone 
-		error=(target-this.out);
-		
-		// retropropagation vers les parents du neurones  <--
-		// Mise a jours du poids vers output --> One HiddenLayer 
-		
-		 double somme =0;
+		error=(target-this.out);		
+		double somme =0;
 		 
 		//mise à jour du poids output du neurone 
 		double poidsMaj=0;

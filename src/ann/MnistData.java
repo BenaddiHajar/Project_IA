@@ -228,7 +228,8 @@ public class MnistData extends Application {
         	public void handle(ActionEvent event){
         		err.setText("");
         		// construct the neural net
-        		ann = new OneHiddenLayer(data,testSet);
+        		int nbNeuronHidden=Integer.parseInt(askNumNeurons.getText());
+        		ann = new OneHiddenLayer(data,testSet,nbNeuronHidden);
         		((OneHiddenLayer) ann).numHiddenNeurons = Integer.parseInt(askNumNeurons.getText());
         		// launch training
         		Map<Integer,Double> res = ann.train(numIterations);

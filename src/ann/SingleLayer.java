@@ -15,7 +15,7 @@ public class SingleLayer extends ANN{
 		this.testingData = testingData;
 		outLayer =new ArrayList <Neuron>(10);
 		for(int i=0; i<10;i++){
-			outLayer.add(new Neuron(new Sigmoid())); //new Sigmoid() 
+			outLayer.add(new Neuron(new Sigmoid())); 
 		}
 		inLayer =new ArrayList<InputNeuron>(28*28); 
 		for(int i=0; i<28*28;i++){
@@ -38,11 +38,6 @@ public class SingleLayer extends ANN{
 		for(Neuron n :outLayer){
 			n.initWeights();
 		}
-		
-		
-		
-		
-		
 	}
 	/**
 	 * Calcule la sortie du réseau de neurones compte tenu de l'entree Input in
@@ -60,20 +55,13 @@ public class SingleLayer extends ANN{
 		double [] listout = new double[10]; // somme pondérées out calculé pour outlayer  
 		for(Neuron n :outLayer){
 			n.feed();
-			//System.out.println("Somme norm :" +n.out);
 			listout[indice]=n.getCurrentOutput();
 			indice++;
 		}
 		o=new Output(listout);
 		return o;
 	}
-	/**
-	*méthode qui entraîne le réseau de neurones pour un certain nombre d'itérations (aucun test de convergence n'est utilisé).
-	* @param numIterations est le nombre d'itérations, c'est-à-dire le nombre de fois que l'algorithme sera mis à jour en utilisant
-	* l'ensemble des données d'entraînement
-	* @return renvoie la dynamique de l'erreur: il contient une carte qui associe un numéro d'itération et le
-	* nombre d'erreurs effectuées sur l'ensemble de test.
-	*/
+
 	public Map<Integer,Double> train(int nbIterations) {
 		Map <Integer,Double> tr=new HashMap<Integer,Double>();
 		//feed --> bacpropagration --->test 

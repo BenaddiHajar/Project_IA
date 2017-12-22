@@ -9,16 +9,18 @@ import java.util.Random;
 public class OneHiddenLayer extends ANN{
 
 	List<Neuron> hiddenLayer;
-	int numHiddenNeurons = 10;
+	int numHiddenNeurons ;
 
-	public OneHiddenLayer(Map<Input, Output> trainingData, Map<Input, Output> testingData) {
+	public OneHiddenLayer(Map<Input, Output> trainingData, Map<Input, Output> testingData,int nbNeuroneH) {
+		this.numHiddenNeurons=nbNeuroneH;
+		System.out.println(" nb de neurones cachés:"+ numHiddenNeurons);
 		generator = new Random();
 		this.trainingData = trainingData;
 		this.testingData = testingData;
 		
 		outLayer =new ArrayList <Neuron>(10);
 		for(int i=0; i<10;i++){
-			outLayer.add(new Neuron(new Sigmoid())); //new Sigmoid() 
+			outLayer.add(new Neuron(new Sigmoid()));
 		}
 		
 		inLayer =new ArrayList<InputNeuron>(28*28); 
@@ -27,8 +29,8 @@ public class OneHiddenLayer extends ANN{
 		}
 		
 		
-		hiddenLayer =new ArrayList<Neuron>(10);
-		for(int i=0; i<10;i++){
+		hiddenLayer =new ArrayList<Neuron>(numHiddenNeurons);
+		for(int i=0; i<numHiddenNeurons;i++){
 			hiddenLayer.add(new Neuron(new Sigmoid())); //new Sigmoid() 
 		}
 		
@@ -78,7 +80,8 @@ public class OneHiddenLayer extends ANN{
 			inpN.feed(vals.next());	
 	     	//System.out.println(inpN.getCurrentOutput());
 		}
- //PROPAGATION AVANT	
+		
+		//PROPAGATION AVANT	
 		// feed sur l'ensemble hiddenLayer
 		for(Neuron n :hiddenLayer){
 			n.feed();
